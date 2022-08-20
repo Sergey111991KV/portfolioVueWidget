@@ -1,5 +1,11 @@
 # vue-wid
 
+# environment
+
+Add two variables to .env file:
+VUE_APP_OPEN_WEATHER_API_KEY - OpenWeather API key.
+VUE_APP_IPINFO_TOKEN - ipinfo token.
+
 ## Project setup
 ```
 yarn install
