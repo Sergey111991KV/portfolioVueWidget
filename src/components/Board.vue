@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: "Widget-Board"
+  name: "WidgetBoard"
 }
 </script>
 

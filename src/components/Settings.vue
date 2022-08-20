@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: "Widget-Settings"
+  name: "WidgetSettings"
 }
 </script>
 
