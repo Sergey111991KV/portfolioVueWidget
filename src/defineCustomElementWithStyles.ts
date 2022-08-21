@@ -1,16 +1,18 @@
 import { defineCustomElement as VueDefineCustomElement, h, createApp, getCurrentInstance } from 'vue'
+import store from "./store";
 
-const nearestElement = (el) => {
+const nearestElement = (el: any) => {
     while (el?.nodeType !== 1 /* ELEMENT */) el = el.parentElement
     return el
 }
 
-export const defineCustomElement = (component, { globalComponents = {}, plugins = [] } = {}) =>
+export const defineCustomElement = (component: any, { globalComponents = {}, plugins = [] } = {}) =>
     VueDefineCustomElement({
         props: component.props,
         setup(props) {
             // @ts-ignore
             const app = createApp()
+            app.use(store)
 
             plugins.forEach(app.use)
 
@@ -19,7 +21,7 @@ export const defineCustomElement = (component, { globalComponents = {}, plugins 
 
             app.mixin({
                 mounted() {
-                    const insertStyles = (styles) => {
+                    const insertStyles = (styles: any) => {
                         if (styles?.length) {
                             this.__style = document.createElement('style')
                             this.__style.innerText = styles.join().replace(/\n/g, '')

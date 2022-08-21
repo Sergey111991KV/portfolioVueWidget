@@ -1,6 +1,5 @@
 <template>
   <div>
-    <p>Loader</p>
   </div>
 </template>
 

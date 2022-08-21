@@ -1,12 +1,15 @@
 <template>
-  <div class="widget-app">
-      <div>
-        <Icon @click="toggleSettingsVisibility" name="gear" width="10px" height="10px"></Icon>
+  <div class="widget_app">
+      <div class="widget__gear_container" v-if="!isSettingsOpen">
+        <Icon @click="toggleSettingsVisibility" :name="'gear'"></Icon>
       </div>
-    <WidgetSettings v-if="isSettingsOpen" @toggleSettingsVisibility="toggleSettingsVisibility"></WidgetSettings>
-    <WidgetBoard></WidgetBoard>
-    <WidgetLoader></WidgetLoader>
-    <WidgetNavbar></WidgetNavbar>
+      <WidgetSettings v-if="isSettingsOpen" @toggleSettingsVisibility="toggleSettingsVisibility">
+        <LocationList></LocationList>
+      </WidgetSettings>
+      <WidgetBoard>
+        <WeatherList></WeatherList>
+      </WidgetBoard>
+      <WidgetLoader></WidgetLoader>
   </div>
 </template>
 
@@ -14,8 +17,9 @@
 import Icon from "@/components/Icon/Icon"
 import WidgetBoard from "@/components/Board";
 import WidgetLoader from "@/components/Loader";
-import WidgetNavbar from "@/components/Navbar";
 import WidgetSettings from "@/components/Settings";
+import WeatherList from "@/components/weather/WeatherList";
+import LocationList from "@/components/location/LocationList";
 
 export default {
   name: 'App',
@@ -23,30 +27,41 @@ export default {
     Icon,
     WidgetBoard,
     WidgetLoader,
-    WidgetNavbar,
-    WidgetSettings
+    WidgetSettings,
+    WeatherList,
+    LocationList
   },
   data() {
     return {
       isSettingsOpen: false
     }
   },
+  mounted() {
+    this.$store.commit("UPDATE_LOCATIONS");
+  },
   methods: {
     toggleSettingsVisibility() {
       this.isSettingsOpen = !this.isSettingsOpen
     }
   }
-
 }
 </script>
 
 <style>
-.widget-app {
+.widget_app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  padding: 10px;
+  width: 400px;
+  background-color: #e2efeb;
+}
+.widget__gear_container{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 </style>

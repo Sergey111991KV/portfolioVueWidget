@@ -50,7 +50,10 @@ export default createStore({
     },
 
     actions: {
-
+        setLocalStorageLocations({commit}, locations) {
+            localStorage.setItem("locations", JSON.stringify(locations));
+            commit("UPDATE_LOCATIONS");
+        },
     },
 
     modules: {},

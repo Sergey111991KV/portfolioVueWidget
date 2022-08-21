@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <p>Board</p>
+  <div class="board">
+    <slot />
   </div>
 </template>
 
@@ -11,5 +11,10 @@ export default {
 </script>
 
 <style scoped>
-
+.board{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 300px;
+}
 </style>

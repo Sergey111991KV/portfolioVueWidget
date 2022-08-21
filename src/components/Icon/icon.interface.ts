@@ -1,1 +1,5 @@
-export type IconName = 'gear' | ''
+export type IconName =
+        'gear'
+    |   'enter'
+    |   'basket'
+    |   'hamburger'

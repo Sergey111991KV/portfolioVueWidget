@@ -1,12 +1,12 @@
 <template>
   <div>
-    <p>Navbar</p>
+    WeatherCell
   </div>
 </template>
 
 <script>
 export default {
-  name: "WidgetNavbar"
+  name: "WeatherCell"
 }
 </script>
 
