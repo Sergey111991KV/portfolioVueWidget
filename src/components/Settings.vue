@@ -22,9 +22,9 @@ export default {
 <style scoped>
 .settings{
   position: absolute;
-  margin-left: -250px;
-  left: 50%;
+  left: 70px;
   min-height: 280px;
+  max-width: 250px;
   z-index: 3;
   display: flex;
   flex-direction: column;

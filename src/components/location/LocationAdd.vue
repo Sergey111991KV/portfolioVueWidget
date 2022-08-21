@@ -16,40 +16,34 @@ export default {
   components: {
     Icon
   },
-  data() {
-      return {
-        name: ''
-      }
-  },
   computed: {
     ...mapGetters({
       locations: "GET_LOCATIONS",
+      newLocation: "GET_NEW_LOCATION"
     }),
+    name: {
+      set(value) {
+        this.$store.commit("CLEAR_NEW_LOCATION_NAME", value);
+      },
+      get() {
+        return this.newLocation;
+      }
+    }
   },
   methods: {
     addLocation() {
-      if (this.uniquenessValidation(this.locations, this.name).length == 0) {
-        // fetch(`https://api.openweathermap.org/data/2.5/weather?q=${this.name}&APPID=9dd204d2830498b233f6ad2ea679a11a`).then ((res) => {
-        //       console.log(res)
-        //     }
-        // )
-        //     .catch((err) => console.log(err))
-        let locations = this.locations;
-        locations.push(this.name);
-
-        this.$store.dispatch("setLocalStorageLocations", locations);
-        // this.$store.dispatch("fetchWeather", city, country);
-
-        this.name = ''
-
+      if (this.uniquenessValidation(this.locations, this.name).length === 0) {
+        this.$store.dispatch("checkAndAddWeather");
       } else {
-        alert("This location has already been added.");
+        alert("This location has already been added");
       }
     },
     uniquenessValidation(locations, new_location) {
-      return locations.filter((e) => e === new_location);
+      console.log(locations, new_location)
+      return locations.filter((e) => e.name === new_location);
     },
     pressEnter(e) {
+      console.log(e)
       if (e.key === 'Enter') this.addLocation()
     }
   }

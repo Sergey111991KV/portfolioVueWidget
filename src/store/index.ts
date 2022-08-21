@@ -1,14 +1,18 @@
 import {createStore} from "vuex";
-// import axios from "axios";
+import axios from "axios";
 
 export default createStore({
     state: {
+        newLocation: '',
         locations: [],
         weather: [],
         loading: false,
     },
 
     getters: {
+        GET_NEW_LOCATION(state) {
+            return state.newLocation;
+        },
         GET_LOCATIONS(state) {
             return state.locations;
         },
@@ -24,9 +28,14 @@ export default createStore({
 
     mutations: {
         UPDATE_LOCATIONS(state) {
+            console.log('UPDATE_LOCATIONS');
             // @ts-ignore
             const locations = JSON.parse(localStorage.getItem("locations"));
             locations !== null ? (state.locations = locations) : (state.locations = []);
+        },
+
+        CLEAR_NEW_LOCATION_NAME(state, value) {
+            state.newLocation = value;
         },
 
         ADD_WEATHER(state, data) {
@@ -54,6 +63,74 @@ export default createStore({
             localStorage.setItem("locations", JSON.stringify(locations));
             commit("UPDATE_LOCATIONS");
         },
+        // @ts-ignore
+        checkAndAddWeather({commit, state, dispatch}){
+            try {
+                axios
+                    .get(
+                        `https://api.openweathermap.org/data/2.5/weather?q=${state.newLocation}&units=metric&appid=${process.env.VUE_APP_OPEN_WEATHER_API_KEY}`
+                    )
+                    .then((response) => {
+                        const data = response.data
+                        const locations = state.locations;
+                        // @ts-ignore
+                        locations.push({
+                            // @ts-ignore
+                            name: state.newLocation,
+                            // @ts-ignore
+                            id: Math.random().toString(16).slice(2),
+                        });
+                        dispatch("setLocalStorageLocations", locations);
+                        commit("ADD_WEATHER", {
+                            clouds: data?.clouds,
+                            feelLike: data?.main['feels_like'],
+                            name: data?.name,
+                            pressure: data?.main?.pressure,
+                            temp: data?.main?.temp,
+                            visibility: data?.visibility,
+                            weatherDesc: data?.weather?.description,
+                            weatherMain: data?.weather?.main,
+                            wind: data?.wind,
+                        });
+                        commit("CLEAR_NEW_LOCATION_NAME", '');
+                    })
+                    .catch((error) => {
+                        if(error?.response?.data?.cod === "404") {
+                            alert(error?.response?.data?.message + " " + ", sorry, we try to add sities list for check your request, but know you must check correct data themself")
+                            commit("CLEAR_NEW_LOCATION_NAME", '');
+                        }
+                    });
+            } catch (error) {
+                alert("Wrong request to weather api " + error);
+            }
+        },
+        addWeather({commit, state, dispatch}, location) {
+            try {
+                axios
+                    .get(
+                        `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${process.env.VUE_APP_OPEN_WEATHER_API_KEY}`
+                    )
+                    .then((response) => {
+                        const data = response.data
+                        commit("ADD_WEATHER", {
+                            clouds: data?.clouds,
+                            feelLike: data?.main['feels_like'],
+                            name: data?.name,
+                            pressure: data?.main?.pressure,
+                            temp: data?.main?.temp,
+                            visibility: data?.visibility,
+                            weatherDesc: data?.weather?.description,
+                            weatherMain: data?.weather?.main,
+                            wind: data?.wind,
+                        });
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            } catch (error) {
+                console.log(error);
+            }
+        }
     },
 
     modules: {},

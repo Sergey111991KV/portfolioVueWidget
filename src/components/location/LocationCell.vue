@@ -1,8 +1,8 @@
 <template>
-  <div class="location_cell" @click="locationClick">
+  <div class="location_cell">
     <Icon name="hamburger" width="15px" height="15px"></Icon>
       {{ this.location.name }}
-    <Icon name="basket" width="15px" height="15px"></Icon>
+    <Icon @click="deleteLocation" name="basket" width="15px" height="15px"></Icon>
   </div>
 </template>
 
@@ -19,8 +19,8 @@ export default {
   },
   name: "LocationCell",
   methods: {
-    locationClick() {
-      console.log(this.location)
+    deleteLocation() {
+      this.$emit("deleteCell", {id: this.location.id})
     }
   }
 }

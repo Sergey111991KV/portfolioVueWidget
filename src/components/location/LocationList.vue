@@ -1,7 +1,7 @@
 <template>
   <div class="location_list">
     <div v-for="location in locations" :key="location.id">
-      <LocationCell :location="location"></LocationCell>
+      <LocationCell @deleteCell="onDeleteCell" :location="location"></LocationCell>
     </div>
   </div>
   <LocationAdd></LocationAdd>
@@ -23,6 +23,10 @@ export default {
     }),
   },
   methods: {
+    onDeleteCell({id}) {
+      let locations = this.locations.filter((e) => e.id !== id);
+      this.$store.dispatch("setLocalStorageLocations", locations);
+    }
   }
 }
 </script>
