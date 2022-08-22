@@ -1,5 +1,7 @@
 export type IconName =
-        'gear'
+        'basket'
+    |   'close'
     |   'enter'
-    |   'basket'
+    |   'gear'
     |   'hamburger'
+    |   'plus'

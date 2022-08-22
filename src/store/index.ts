@@ -64,11 +64,12 @@ export default createStore({
             commit("UPDATE_LOCATIONS");
         },
         // @ts-ignore
-        checkAndAddWeather({commit, state, dispatch}){
+        async checkAndAddWeather({commit, state, dispatch}, currentLocation){
+            const newLocation = currentLocation ? currentLocation : state.newLocation
             try {
-                axios
+                await axios
                     .get(
-                        `https://api.openweathermap.org/data/2.5/weather?q=${state.newLocation}&units=metric&appid=${process.env.VUE_APP_OPEN_WEATHER_API_KEY}`
+                        `https://api.openweathermap.org/data/2.5/weather?q=${newLocation}&units=metric&appid=${process.env.VUE_APP_OPEN_WEATHER_API_KEY}`
                     )
                     .then((response) => {
                         const data = response.data
@@ -76,7 +77,7 @@ export default createStore({
                         // @ts-ignore
                         locations.push({
                             // @ts-ignore
-                            name: state.newLocation,
+                            name: newLocation,
                             // @ts-ignore
                             id: Math.random().toString(16).slice(2),
                         });
@@ -92,21 +93,22 @@ export default createStore({
                             weatherMain: data?.weather?.main,
                             wind: data?.wind,
                         });
-                        commit("CLEAR_NEW_LOCATION_NAME", '');
+                        if (!currentLocation) commit("CLEAR_NEW_LOCATION_NAME", '');
+
                     })
                     .catch((error) => {
                         if(error?.response?.data?.cod === "404") {
                             alert(error?.response?.data?.message + " " + ", sorry, we try to add sities list for check your request, but know you must check correct data themself")
-                            commit("CLEAR_NEW_LOCATION_NAME", '');
+                            if (!currentLocation) commit("CLEAR_NEW_LOCATION_NAME", '');
                         }
                     });
             } catch (error) {
                 alert("Wrong request to weather api " + error);
             }
         },
-        addWeather({commit, state, dispatch}, location) {
+        async addWeather({commit, state, dispatch}, location) {
             try {
-                axios
+                await axios
                     .get(
                         `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${process.env.VUE_APP_OPEN_WEATHER_API_KEY}`
                     )
@@ -127,6 +129,17 @@ export default createStore({
                     .catch((error) => {
                         console.log(error);
                     });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        async setCurrentLocation({dispatch}) {
+            try {
+                await axios.get(`https://ipinfo.io/json?token=${process.env.VUE_APP_IPINFO_TOKEN}`).then((response) => {
+                    if (response.data.city) {
+                        dispatch("checkAndAddWeather", response.data.city);
+                    }
+                })
             } catch (error) {
                 console.log(error);
             }

@@ -16,5 +16,6 @@ export default {
   flex-direction: column;
   align-items: center;
   min-height: 300px;
+  padding: 10px;
 }
 </style>

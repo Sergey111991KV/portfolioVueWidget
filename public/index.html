@@ -4,14 +4,29 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <title><%= htmlWebpackPlugin.options.title %></title>
+      <style>
+          .my_widget_container_position{
+              position: absolute;
+              bottom: 40px;
+              right: 40px;
+              width: fit-content;
+          }
+      </style>
   </head>
   <body>
     <noscript>
       <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
-    <my-widget></my-widget>
+    <h2>Hi! I'm junior web-developer and it's my test-widget app.</h2>
+    <h3>Description:</h3>
+    <h3>I'll be honest - I took an already made widget as a basis, found it on the Internet, it seems that it was even made for your company. Where I work we make a widget, but there is pure TS + Webpack, I wanted to write the same, but your stack assumes Vue))</h3>
+    <h3>p.s. Of course, it was necessary to add pictures to the widget and style it more...</h3>
+
+    <div class="my_widget_container_position">
+        <my-widget></my-widget>
+    </div>
+
     <!-- built files will be auto injected -->
   </body>
 </html>

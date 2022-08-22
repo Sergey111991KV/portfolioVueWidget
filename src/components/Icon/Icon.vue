@@ -34,5 +34,6 @@ export default {
   align-items: center;
   justify-content: flex-end;
   width: fit-content;
+  cursor: pointer;
 }
 </style>

@@ -4,7 +4,7 @@
       <label for="new-location">Add location</label>
       <input @keyup="pressEnter" v-model="name" id="new-location">
     </div>
-    <Icon @click="addLocation" name="enter"></Icon>
+    <Icon @click="addLocation" name="enter" :height="'20px'" :width="'20px'"></Icon>
   </div>
 </template>
 
@@ -52,6 +52,7 @@ export default {
 
 <style scoped>
 .location_add{
+  margin-top: 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
